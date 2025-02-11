@@ -1,0 +1,91 @@
+CREATE TABLE IF NOT EXISTS Students (
+    student_id INT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100),
+    birth_date DATE
+);
+
+CREATE TABLE IF NOT EXISTS Courses (
+    course_id INT PRIMARY KEY,
+    course_name VARCHAR(100),
+    credits INT
+);
+
+CREATE TABLE IF NOT EXISTS Enrollments (
+    enrollment_id INT PRIMARY KEY,
+    student_id INT,
+    course_id INT,
+    enrollment_date DATE,
+    FOREIGN KEY (student_id) REFERENCES Students(student_id),
+    FOREIGN KEY (course_id) REFERENCES Courses(course_id)
+);
+
+--ALTER TABLE Students ADD COLUMN phone_number VARCHAR(15)
+
+--DELETE FROM Students WHERE phone_number;
+
+CREATE TABLE IF NOT EXISTS Departments (
+	department_id INT PRIMARY KEY,
+	department_name VARCHAR(100),
+	faculty VARCHAR(100)
+);
+
+--INSERT INTO Students (student_id, name, email, birth_date)
+--VALUES(1,"Vlad","vladislav@gmail.com", "2005.12.09"),
+--	  (2,"Yaroslav","yaroslav@gmail.com","2006.06.30"),
+--	  (3,"Andrii","andrii@gmail.com", "2005.12.13");
+      
+--INSERT INTO Courses (course_id, course_name, credits)
+--VALUES(1,"2",2),
+--	  (2,"1",5),
+--	  (3,"3",4);
+      
+UPDATE Students
+SET email = 'john.doe2025@gmail.com'
+WHERE student_id = 1;
+
+
+DELETE FROM Students WHERE student_id = 3;
+
+--SELECT * FROM Students WHERE birth_date > 2000
+
+--SELECT * FROM Courses ORDER BY credits;
+
+--SELECT COUNT(*) FROM Students WHERE student_id;
+
+SELECT Students.student_id, Students.name, Courses.course_name
+FROM Students
+JOIN Enrollments ON Students.student_id = Enrollments.student_id
+JOIN Courses ON Enrollments.course_id = Courses.course_id;
+
+SELECT Students.student_id, Students.name
+FROM Students
+JOIN Enrollments ON Students.student_id = Enrollments.student_id
+WHERE Enrollments.course_id = 102;
+
+--SELECT COUNT(*) AS enrollment_count
+--FROM Enrollments;
+
+SELECT Students.student_id, Students.name
+FROM Students
+LEFT JOIN Enrollments ON Students.student_id = Enrollments.student_id
+WHERE Enrollments.student_id IS NULL;
+
+--ALTER TABLE Enrollments ADD COLUMN grade VARCHAR(5);
+UPDATE Enrollments
+SET grade = 'A'
+WHERE enrollment_id = 1;
+
+UPDATE Enrollments
+SET grade = 'B'
+WHERE enrollment_id = 2;
+
+SELECT Students.student_id, Students.name
+FROM Students
+JOIN Enrollments ON Students.student_id = Enrollments.student_id
+WHERE Enrollments.course_id = (
+    SELECT course_id
+    FROM Courses
+    ORDER BY credits DESC
+    LIMIT 1
+);
