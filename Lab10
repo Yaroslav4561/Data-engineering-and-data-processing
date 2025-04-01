@@ -1,0 +1,82 @@
+import pandas as pd
+
+# Завантаження файлу CSV з Google Drive або Colab (потрібно замінити шлях до вашого файлу)
+from google.colab import files
+
+# Зчитування даних у DataFrame
+df = pd.read_csv('education_career_success.csv')
+
+# Загальна інформація про дані
+df.info()
+
+# Базові статистичні характеристики
+df.describe()
+
+# Перевірка наявності пропущених значень
+df.isnull().sum()
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Гістограма для High_School_GPA
+sns.histplot(df["High_School_GPA"], bins=20, kde=True)
+plt.title('High School GPA Distribution')
+plt.show()
+
+# Гістограма для University_GPA
+sns.histplot(df["University_GPA"], bins=20, kde=True)
+plt.title('University GPA Distribution')
+plt.show()
+
+# Гістограма для Starting_Salary
+sns.histplot(df["Starting_Salary"], bins=20, kde=True)
+plt.title('Starting Salary Distribution')
+plt.show()
+
+# Гістограма для Career_Satisfaction
+sns.histplot(df["Career_Satisfaction"], bins=20, kde=True)
+plt.title('Career Satisfaction Distribution')
+plt.show()
+# Графік розсіювання для University_Ranking та Starting_Salary
+sns.scatterplot(x=df["University_Ranking"], y=df["Starting_Salary"])
+plt.title('University Ranking vs Starting Salary')
+plt.show()
+# Boxplot для розподілу Starting_Salary по Field_of_Study
+sns.boxplot(x=df["Field_of_Study"], y=df["Starting_Salary"])
+plt.title('Starting Salary by Field of Study')
+plt.xticks(rotation=90)
+plt.show()
+# Вибір лише числових стовпців
+df_numeric = df.select_dtypes(include=['number'])
+
+# Теплова карта кореляцій для числових даних
+plt.figure(figsize=(10, 8))
+sns.heatmap(df_numeric.corr(), annot=True, cmap='coolwarm', fmt='.2f')
+plt.title('Correlation Heatmap')
+plt.show()
+# Boxplot для Job_Offers залежно від Soft_Skills_Score
+sns.boxplot(x=df["Soft_Skills_Score"], y=df["Job_Offers"])
+plt.title('Job Offers by Soft Skills Score')
+plt.show()
+# Регресійний графік для Networking_Score та Job_Offers
+sns.regplot(x=df["Networking_Score"], y=df["Job_Offers"])
+plt.title('Networking Score vs Job Offers')
+plt.show()
+# Violin plot для Career_Satisfaction по Field_of_Study
+sns.violinplot(x=df["Field_of_Study"], y=df["Career_Satisfaction"])
+plt.title('Career Satisfaction by Field of Study')
+plt.xticks(rotation=90)
+plt.show()
+
+# Bar plot для середньої задоволеності кар'єрою по спеціальностях
+sns.barplot(x=df["Field_of_Study"], y=df["Career_Satisfaction"])
+plt.title('Average Career Satisfaction by Field of Study')
+plt.xticks(rotation=90)
+plt.show()
+# Візуалізація факторів, що сприяють підвищенню
+sns.barplot(x=df["Soft_Skills_Score"], y=df["Years_to_Promotion"])
+plt.title('Soft Skills Score vs Years to Promotion')
+plt.show()
+
+sns.barplot(x=df["Networking_Score"], y=df["Years_to_Promotion"])
+plt.title('Networking Score vs Years to Promotion')
+plt.show()
