@@ -1,0 +1,49 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(-10, 10, 400)
+y = x**2
+
+plt.plot(x, y, label='y = x^2', color='b')
+
+plt.xlabel('x')
+plt.ylabel('y')
+plt.title('Лінійний графік для функції y = x^2')
+plt.grid(True)
+
+plt.legend()
+
+plt.show()
+groups = ['ІПЗ-1/1', 'ІПЗ-2/1', 'ІПЗ-3/1', 'ІПЗ-4/1']
+students = [23, 45, 12, 30]
+
+plt.bar(groups, students, color='skyblue')
+
+plt.xlabel('Групи')
+plt.ylabel('Кількість студентів')
+plt.title('Кількість студентів у різних групах')
+
+for i, val in enumerate(students):
+    plt.text(i, val + 1, str(val), ha='center', va='bottom', fontsize=12)
+
+plt.show()
+categories = ['Апельсини', 'Яблука', 'Банани', 'Виноград']
+percentages = [25, 30, 20, 25]
+
+plt.pie(percentages, labels=categories, autopct='%1.1f%%', startangle=90, colors=['orange', 'green', 'yellow', 'purple'])
+
+plt.title('Розподіл відсотків серед фруктів')
+
+plt.show()
+x = np.random.rand(100)
+y = np.random.rand(100)
+sizes = np.random.rand(100) * 100  
+colors = np.random.rand(100) 
+
+plt.scatter(x, y, s=sizes, c=colors, alpha=0.7, cmap='viridis')
+
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.title('Діаграма розсіювання з випадковими даними')
+
+plt.show()
