@@ -1,0 +1,38 @@
+!pip install streamz  # Встановлення streamz (виконується один раз)
+
+import pandas as pd
+from streamz.dataframe import DataFrame
+
+# Завантаження файлу (замініть на правильний шлях)
+df = pd.read_excel("/content/college_comparing_matrix.xlsx", sheet_name="Здобувачі")
+
+# Імітація потокових даних
+sdf = DataFrame(example=df.iloc[:0])  # Створення пустого потокового DataFrame
+for i in range(0, len(df), 100):
+    batch = df.iloc[i:i+100]
+    sdf.emit(batch)  # Передача порцій даних
+df_filtered = df[df['Заклад освіти'] == '732 Рівненський фаховий коледж інформаційних технологій']
+print(df_filtered)
+students_per_college = df.groupby("Заклад освіти")["Здобувачі"].sum()
+print(students_per_college)
+specialty_counts = df.groupby("Спеціальність")["Здобувачі"].sum()
+max_specialty = specialty_counts.idxmax()
+min_specialty = specialty_counts.idxmin()
+print("Спеціальність з найбільшою кількість здобувачів: ", max_specialty)
+print("Спеціальність з найменшою кількість здобувачів: ", min_specialty)
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(12, 6))
+specialty_counts.sort_values().plot(kind="barh", color="skyblue")
+plt.xlabel("Кількість здобувачів")
+plt.ylabel("Спеціальність")
+plt.title("Кількість здобувачів за спеціальностями")
+plt.grid(axis="x", linestyle="--", alpha=0.7)
+plt.show()
+college_name = "732 Рівненський фаховий коледж інформаційних технологій" 
+
+plt.figure(figsize=(8, 8))
+df_college.groupby("Спеціальність")["Здобувачі"].sum().plot(kind="pie", autopct='%1.1f%%', cmap="coolwarm")
+plt.ylabel("")
+plt.title(f"Розподіл здобувачів за спеціальностями у {college_name}")
+plt.show()
